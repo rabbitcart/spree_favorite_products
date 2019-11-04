@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Spree::User do
+describe Spree.user_class do
   before(:each) do
-    @user = Spree::User.create! email: 'test@example.com', password: 'spree123'
+    @user = Spree.user_class.create! email: 'test@example.com', password: 'spree123'
     shipping_category = Spree::ShippingCategory.create! name: 'shipping_category'
     @product1 = Spree::Product.create! name: 'product1', price: 100, shipping_category_id: shipping_category.id
     @product2 = Spree::Product.create! name: 'product2', price: 100, shipping_category_id: shipping_category.id
@@ -43,7 +43,7 @@ describe Spree::User do
       @fav_variant.option_values << Spree::OptionValue.first
       @fav_variant.save!
 
-      favorite = Spree::Favorite.new user_id: Spree::User.first.id, favoritable_id: @fav_variant.id, favoritable_type: 'Spree::Variant'
+      favorite = Spree::Favorite.new user_id: Spree.user_class.first.id, favoritable_id: @fav_variant.id, favoritable_type: 'Spree::Variant'
       favorite.save!
     end
 

@@ -7,8 +7,8 @@ describe Spree::Product do
     @favorite_product2 = Spree::Product.create! name: 'favorite_product2', price: 100, shipping_category_id: shipping_category.id
     @product1 = Spree::Product.create! name: 'product1', price: 100, shipping_category_id: shipping_category.id
     @product2 = Spree::Product.create! name: 'product2', price: 100, shipping_category_id: shipping_category.id
-    @user1 = Spree::User.create! email: 'user1@example.com', password: 'example', password_confirmation: "example"
-    @user2 = Spree::User.create! email: 'user2@example.com', password: "example", password_confirmation: 'example'
+    @user1 = Spree.user_class.create! email: 'user1@example.com', password: 'example', password_confirmation: "example"
+    @user2 = Spree.user_class.create! email: 'user2@example.com', password: "example", password_confirmation: 'example'
     @user1.favorites.create! favoritable_id: @favorite_product1.id, favoritable_type: 'Spree::Product'
     @user2.favorites.create! favoritable_id: @favorite_product1.id, favoritable_type: 'Spree::Product'
     @user2.favorites.create! favoritable_id: @favorite_product2.id, favoritable_type: 'Spree::Product'
@@ -16,7 +16,7 @@ describe Spree::Product do
 
 
   it { is_expected.to have_many(:favorites).dependent(:destroy) }
-  it { is_expected.to have_many(:favorite_users).through(:favorites).class_name('Spree::User') }
+  it { is_expected.to have_many(:favorite_users).through(:favorites).class_name(Spree.user_class.name) }
 
   describe "Spree::Product.favorite" do
 

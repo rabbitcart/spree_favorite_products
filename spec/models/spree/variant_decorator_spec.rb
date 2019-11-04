@@ -21,8 +21,8 @@ describe Spree::Variant do
     @variant2.option_values << Spree::OptionValue.first
     @variant2.save!
 
-    @user1 = Spree::User.create! email: 'user1@example.com', password: 'example', password_confirmation: "example"
-    @user2 = Spree::User.create! email: 'user2@example.com', password: "example", password_confirmation: 'example'
+    @user1 = Spree.user_class.create! email: 'user1@example.com', password: 'example', password_confirmation: "example"
+    @user2 = Spree.user_class.create! email: 'user2@example.com', password: "example", password_confirmation: 'example'
     @user1.favorites.create! favoritable_id: @variant1.id, favoritable_type: 'Spree::Variant'
     @user2.favorites.create! favoritable_id: @variant1.id, favoritable_type: 'Spree::Variant'
     @user2.favorites.create! favoritable_id: @variant2.id, favoritable_type: 'Spree::Variant'
@@ -30,7 +30,7 @@ describe Spree::Variant do
 
   describe 'Associations' do
     it { is_expected.to have_many(:favorites).dependent(:destroy) }
-    it { is_expected.to have_many(:favorite_users).through(:favorites).class_name('Spree::User') }
+    it { is_expected.to have_many(:favorite_users).through(:favorites).class_name(Spree.user_class.name) }
   end
 
   describe "favorite" do

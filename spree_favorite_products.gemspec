@@ -20,11 +20,14 @@ Gem::Specification.new do |s|
   spree_version = '>= 3.2.0', '< 4.0.0'
 
   s.add_dependency 'spree_core', spree_version
+  s.add_dependency 'spree_backend', spree_version
+  s.add_dependency 'spree_frontend', spree_version
+  s.add_dependency 'spree_api', spree_version
   s.add_dependency 'spree_extension', '~> 0.0.5'
 
   s.add_development_dependency 'appraisal'
   s.add_development_dependency 'coffee-rails', '~> 4.2.1'
-  s.add_development_dependency 'database_cleaner', '~> 1.5.3'
+  s.add_development_dependency 'database_cleaner', '~> 1.6.0'
   s.add_development_dependency 'mysql2'
   s.add_development_dependency 'rails-controller-testing', '~> 1.0.1'
   s.add_development_dependency 'rspec-rails', '~> 3.5.2'
@@ -33,4 +36,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'shoulda-matchers', '3.1.1'
   s.add_development_dependency 'simplecov', '~> 0.12.0'
   s.add_development_dependency 'sqlite3'
+  s.add_development_dependency 'devise'
 end
