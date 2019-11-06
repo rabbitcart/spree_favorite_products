@@ -29,7 +29,10 @@ RSpec.configure do |config|
   config.include Spree::TestingSupport::Preferences
   config.include Spree::TestingSupport::ControllerRequests, type: :controller
   config.include Spree::Core::Engine.routes.url_helpers
-  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Rails::Controller::Testing::TestProcess, type: :controller
+  config.include Rails::Controller::Testing::Integration, type: :controller
+  config.include Rails::Controller::Testing::TemplateAssertions, type: :controller
+  # config.include Devise::Test::ControllerHelpers, type: :controller
 
   config.mock_with :rspec
   config.color = true

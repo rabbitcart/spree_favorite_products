@@ -7,7 +7,7 @@ describe Spree::Admin::FavoriteVariantsController do
   let(:proxy_object) { Object.new }
 
   before(:each) do
-    @user = mock_model(Spree::User, generate_spree_api_key!: false)
+    @user = mock_model(Spree.user_class, generate_spree_api_key!: false)
     allow(@user).to receive(:roles).and_return(proxy_object)
     allow(proxy_object).to receive(:includes).and_return([])
 

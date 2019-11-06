@@ -2,7 +2,7 @@ module Spree
   class Favorite < ActiveRecord::Base
     with_options required: true do
       belongs_to :favoritable, polymorphic: true, counter_cache: :favorite_users_count
-      belongs_to :user, class_name: Spree.user_class.name, foreign_key: :user_id
+      belongs_to :user, class_name: Spree.user_class.name
     end
 
     validates :user_id, uniqueness: { scope: [:favoritable_id, :favoritable_type], message: Spree.t(:duplicate_favorite), allow_blank: true }

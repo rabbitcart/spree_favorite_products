@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe Spree::Admin::UsersController, type: :controller do
-  let(:user) { mock_model(Spree::User) }
+  let(:user) { mock_model(Spree.user_class) }
   let(:favorite_product) { mock_model(Spree::Product) }
   let(:favorite_products) { double(ActiveRecord::Relation) }
   let(:favorite_variant) { mock_model(Spree::Variant) }
@@ -16,7 +16,7 @@ RSpec.describe Spree::Admin::UsersController, type: :controller do
 
 
     before do
-      allow(Spree::User).to receive(:find).and_return(user)
+      allow(Spree.user_class).to receive(:find).and_return(user)
       allow(user).to receive(:favorite_products).and_return(favorite_products)
       allow(user).to receive(:favorite_variants).and_return(favorite_products)
     end
