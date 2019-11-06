@@ -1,13 +1,15 @@
 require 'spec_helper'
 
 describe Spree::Admin::FavoriteProductsController do
+  stub_authorization!
+  
   let(:role) { Spree::Role.create!(name: 'user') }
   let(:roles) { [role] }
   let(:product) { mock_model( Spree::Product) }
   let(:proxy_object) { Object.new }
 
   before(:each) do
-    @user = mock_model(Spree::User, generate_spree_api_key!: false)
+    @user = mock_model(Spree.user_class, generate_spree_api_key!: false)
     allow(@user).to receive(:roles).and_return(proxy_object)
     allow(proxy_object).to receive(:includes).and_return([])
 
@@ -19,7 +21,7 @@ describe Spree::Admin::FavoriteProductsController do
     allow(controller).to receive(:authorize_admin).and_return(true)
     allow(controller).to receive(:authorize!).and_return(true)
 
-    @favorite_products = double('favorite_products')
+    @favorite_products = double("favorite_products")
     allow(@favorite_products).to receive(:includes).and_return(@favorite_products)
     allow(@favorite_products).to receive(:order_by_favorite_users_count).and_return(@favorite_products)
     allow(@favorite_products).to receive(:joins).and_return(@favorite_products)
@@ -27,6 +29,12 @@ describe Spree::Admin::FavoriteProductsController do
     allow(@favorite_products).to receive(:search).and_return(@search)
     allow(@favorite_products).to receive(:page).and_return(@favorite_products)
     allow(@favorite_products).to receive(:per).and_return(@favorite_products)
+    allow(@favorite_products).to receive(:total_pages).and_return(@favorite_products)
+    allow(@favorite_products).to receive(:current_page).and_return(@favorite_products)
+    allow(@favorite_products).to receive(:limit_value).and_return(@favorite_products)
+    allow(@favorite_products).to receive(:>).and_return(@favorite_products)
+    allow(@favorite_products).to receive(:-).and_return(@favorite_products)
+    allow(@favorite_products).to receive(:<=).and_return(@favorite_products)
     allow(Spree::Product).to receive(:favorite).and_return(@favorite_products)
   end
 
@@ -37,6 +45,7 @@ describe Spree::Admin::FavoriteProductsController do
 
     it "returns favorite products" do
       expect(Spree::Product).to receive(:favorite)
+      pp @favorite_products
       send_request
     end
 

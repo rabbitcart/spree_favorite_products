@@ -32,7 +32,7 @@ describe Spree::FavoriteProductsController do
       @favorite = mock_model(Spree::Favorite, save: true)
       allow(controller).to receive(:authenticate_spree_user!).and_return(true)
       allow(Spree::Favorite).to receive(:new).and_return(@favorite)
-      @user = mock_model(Spree::User, favorites: Spree::Favorite, generate_spree_api_key!: false, last_incomplete_spree_order: nil)
+      @user = mock_model(Spree.user_class, favorites: Spree::Favorite, generate_spree_api_key!: false, last_incomplete_spree_order: nil)
       allow(controller).to receive(:spree_current_user).and_return(@user)
     end
 
@@ -88,7 +88,7 @@ describe Spree::FavoriteProductsController do
     before(:each) do
       @favorite_products = double('favorite_products')
       @favorite_variants = double('favorite_variants')
-      @user = mock_model(Spree::User, favorite_products: @favorite_products, favorite_variants: @favorite_variants, generate_spree_api_key!: false, last_incomplete_spree_order: nil)
+      @user = mock_model(Spree.user_class, favorite_products: @favorite_products, favorite_variants: @favorite_variants, generate_spree_api_key!: false, last_incomplete_spree_order: nil)
       allow(controller).to receive(:authenticate_spree_user!).and_return(true)
       allow(controller).to receive(:spree_current_user).and_return(@user)
     end
@@ -123,7 +123,7 @@ describe Spree::FavoriteProductsController do
       @favorite = mock_model(Spree::Favorite)
       @favorites = double('spree_favorites', favoritable_id: 'id', favoritable_type: 'Spree::Product')
       allow(@favorites).to receive(:where).and_return([@favorite])
-      @user = mock_model(Spree::User, favorites: @favorites, generate_spree_api_key!: false, last_incomplete_spree_order: nil)
+      @user = mock_model(Spree.user_class, favorites: @favorites, generate_spree_api_key!: false, last_incomplete_spree_order: nil)
       allow(controller).to receive(:authenticate_spree_user!).and_return(true)
       allow(controller).to receive(:spree_current_user).and_return(@user)
     end
@@ -188,7 +188,7 @@ describe Spree::FavoriteProductsController do
     before do
       @favorite = mock_model(Spree::Favorite)
       @favorites = double('spree_favorites', favoritable_id: 'id', favoritable_type: 'Spree::Variant')
-      @user = mock_model(Spree::User, favorites: @favorites, generate_spree_api_key!: false, last_incomplete_spree_order: nil)
+      @user = mock_model(Spree.user_class, favorites: @favorites, generate_spree_api_key!: false, last_incomplete_spree_order: nil)
       allow(@favorites).to receive(:where).and_return([@favorite])
       allow(controller).to receive(:authenticate_spree_user!).and_return(true)
       allow(controller).to receive(:spree_current_user).and_return(@user)

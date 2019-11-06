@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Spree::Admin::ProductsController, type: :controller do
 
-  let!(:user) { Spree::User.create! email: 'user1@example.com', password: 'example', password_confirmation: "example" }
+  let!(:user) { Spree.user_class.create! email: 'user1@example.com', password: 'example', password_confirmation: "example" }
   let!(:shipping_category) { Spree::ShippingCategory.create! name: 'shipping_category' }
   let!(:product) { Spree::Product.create! name: 'product1', price: 100, shipping_category_id: shipping_category.id }
   let!(:option_type) { Spree::OptionType.create! presentation: 'Size', name: 'size' }

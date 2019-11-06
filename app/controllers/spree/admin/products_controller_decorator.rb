@@ -1,6 +1,7 @@
-Spree::Admin::ProductsController.class_eval do
-
-  before_action :set_variant, only: :favorite_users
+module Spree::Admin::ProductsControllerDecorator
+  def self.prepended(base)
+    base.before_action :set_variant, only: :favorite_users
+  end
 
   def favorite_users
     if params[:type] == 'variant'
@@ -32,9 +33,10 @@ Spree::Admin::ProductsController.class_eval do
     def set_favorite_variant_users(id)
       return unless id.present?
 
-      @favorite_variant_users = Spree::User.joins(:favorite_variants).
-                           where(spree_favorites: { favoritable_id: id, favoritable_type: 'Spree::Variant' }).
-                           select('spree_users.*, spree_favorites.favoritable_id').page(params[:favorite_variant_users_page]).per(Spree::Config.favorite_users_per_page)
+      @favorite_variant_users = Spree.user_class.joins(:favorite_variants).
+                            where(spree_favorites: { favoritable_id: id, favoritable_type: 'Spree::Variant' }).
+                            select('spree_users.*, spree_favorites.favoritable_id').page(params[:favorite_variant_users_page]).per(Spree::Config.favorite_users_per_page)
     end
-
 end
+
+Spree::Admin::ProductsController.prepend Spree::Admin::ProductsControllerDecorator
