@@ -19,4 +19,13 @@ Spree::Core::Engine.routes.draw do
   resources :favorite_products, only: [:index, :create, :destroy] do
     get :get_favoritable_value, on: :member
   end
+
+  namespace :api, defaults: { format: 'json' } do
+    namespace :v2 do
+
+      namespace :storefront do
+        resources :favorites, only: [:show, :create, :destroy]
+      end
+    end
+  end
 end

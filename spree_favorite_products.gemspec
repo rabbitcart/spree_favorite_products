@@ -39,4 +39,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '~> 0.12.0'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'devise'
+  s.add_development_dependency 'ffaker'
+  s.add_development_dependency 'jsonapi-rspec'
+  s.add_development_dependency 'factory_bot_rails'
 end
