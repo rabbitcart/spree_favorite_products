@@ -1,6 +1,6 @@
 module Spree::UserDecorator
   def self.prepended(base)
-    base.has_many :favorites, dependent: :destroy, foreign_key: :user_id
+    base.has_many :favorites, dependent: :destroy, foreign_key: :user_id, class_name: 'Spree::Favorite'
     base.has_many :favorite_products, through: :favorites, source: :favoritable, source_type: 'Spree::Product'
     base.has_many :favorite_variants, through: :favorites, source: :favoritable, source_type: 'Spree::Variant'
   end

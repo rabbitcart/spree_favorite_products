@@ -7,15 +7,15 @@ module Spree
 
       user ||= Spree.user_class.new
       if user.respond_to?(:has_spree_role?) && user.has_spree_role?('admin')
-        can :manage, Favorite
+        can :manage, Spree::Favorite
       else
         can :read,
-          Favorite,
+        Spree::Favorite,
             :user_id => user.id
         can :create,
-          Favorite,
+        Spree::Favorite,
             user.present? && :user_id => user.id
-        can :delete, Favorite do |favorite, user|
+        can :delete, Spree::Favorite do |favorite, user|
           favorite.user_id == user.id
         end
       end

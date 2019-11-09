@@ -7,6 +7,12 @@ describe 'Storefront API v2 Account spec', type: :request do
     @user = Spree.user_class.create! email: 'test@example.com', password: 'spree123'
     @token = Doorkeeper::AccessToken.create!(resource_owner_id: @user.id, expires_in: nil)
     @headers_bearer = { 'Authorization' => "Bearer #{@token.token}" }
+
+    @admin = Spree.user_class.create! email: 'admin@example.com', password: 'spree123'
+    @admin.spree_roles << Spree::Role.find_or_create_by(name: "admin")
+    @admin_token = Doorkeeper::AccessToken.create!(resource_owner_id: @admin.id, expires_in: nil)
+    @admin_headers_bearer = { 'Authorization' => "Bearer #{@admin_token.token}" }
+
     shipping_category = Spree::ShippingCategory.create! name: 'shipping_category'
     @product1 = Spree::Product.create! name: 'product1', price: 100, shipping_category_id: shipping_category.id
     favorite = Spree::Favorite.new
@@ -36,6 +42,14 @@ describe 'Storefront API v2 Account spec', type: :request do
       before { get '/api/v2/storefront/account?include=favorites', headers: headers }
 
       it_behaves_like 'returns 403 HTTP status'
+    end
+
+    context 'as an admin user' do
+      let(:headers) { @admin_headers_bearer }
+      before { get '/api/v2/storefront/account?include=favorites', headers: headers }
+
+      it_behaves_like 'returns 200 HTTP status'
+
     end
   end
 end
