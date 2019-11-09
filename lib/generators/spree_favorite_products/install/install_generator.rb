@@ -1,11 +1,14 @@
+require 'spree_extension'
+
 module SpreeFavoriteProducts
   module Generators
     class InstallGenerator < Rails::Generators::Base
+      include SpreeExtension::ComponentsChecker
 
       class_option :auto_run_migrations, type: :boolean, default: false
 
       def add_javascripts
-        if SpreeExtension::ComponentsChecker.frontend_available?
+        if self.class.frontend_available?
           append_file 'vendor/assets/javascripts/spree/frontend/all.js', "\n//= require store/spree_favorite_products\n"
           append_file 'vendor/assets/javascripts/spree/frontend/all.js', "\n//= require spree/frontend/spree_favorite_products\n"
         end
@@ -13,7 +16,7 @@ module SpreeFavoriteProducts
       end
 
       def add_stylesheets
-        if SpreeExtension::ComponentsChecker.frontend_available?
+        if self.class.frontend_available?
           inject_into_file 'vendor/assets/stylesheets/spree/frontend/all.css', " *= require store/spree_favorite_products\n", before: /\*\//, verbose: true
         end
         inject_into_file 'vendor/assets/stylesheets/spree/backend/all.css', " *= require admin/spree_favorite_products\n", before: /\*\//, verbose: true
