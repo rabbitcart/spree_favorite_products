@@ -53,6 +53,24 @@ module Spree
             ).serializable_hash
           end
 
+          # THIS HAS BEEN MOVED TO BASE CONTROLLER
+          def serialize_collection(collection)
+            collection_serializer.new(
+              collection,
+              collection_options(collection)
+            ).serializable_hash
+          end
+      
+          # THIS HAS BEEN MOVED TO BASE CONTROLLER
+          def collection_options(collection)
+            {
+              links: collection_links(collection),
+              meta: collection_meta(collection),
+              include: resource_includes,
+              fields: sparse_fields
+            }
+          end
+
           def resource
             scope.find(params[:id])
           end
