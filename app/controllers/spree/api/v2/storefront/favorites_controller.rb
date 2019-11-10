@@ -53,6 +53,24 @@ module Spree
             ).serializable_hash
           end
 
+          # THIS HAS BEEN MOVED TO BASE CONTROLLER
+          def serialize_collection(collection)
+            collection_serializer.new(
+              collection,
+              collection_options(collection)
+            ).serializable_hash
+          end
+      
+          # THIS HAS BEEN MOVED TO BASE CONTROLLER
+          def collection_options(collection)
+            {
+              links: collection_links(collection),
+              meta: collection_meta(collection),
+              include: resource_includes,
+              fields: sparse_fields
+            }
+          end
+
           def resource
             scope.find(params[:id])
           end
@@ -70,7 +88,7 @@ module Spree
           end
 
           def current_ability
-            @current_ability ||= Spree::Dependencies.ability_class.constantize.new(spree_current_user)
+            @current_ability ||= Spree::FavoriteAbility.new(spree_current_user)
           end
 
           def scope_includes
