@@ -28,6 +28,32 @@ describe 'Storefront API v2 Favorite spec', type: :request do
   end
 
   let(:headers) { @headers_bearer }
+
+  describe 'favorite#index' do
+    before { get "/api/v2/storefront/favorites", headers: headers }
+
+    it_behaves_like 'returns 200 HTTP status'
+
+    it 'returns a users favorites' do
+      expect(json_response['data'][0]['attributes']['favoritable_id']).to eq(@product1.id)
+    end
+
+    context 'as a guest user' do
+      let(:headers) { {} }
+      before { get "/api/v2/storefront/favorites", headers: headers }
+
+      it_behaves_like 'returns 403 HTTP status'
+    end
+
+    context 'with params "include=favoritable"' do
+      before { get "/api/v2/storefront/favorites?include=favoritable", headers: headers }
+
+      it 'returns favorite data with included favorite' do
+        expect(json_response['included']).to    include(have_type('product'))
+      end
+    end
+  end
+
   describe 'favorite#show' do
     before { get "/api/v2/storefront/favorites/#{@favorite.id}", headers: headers }
 

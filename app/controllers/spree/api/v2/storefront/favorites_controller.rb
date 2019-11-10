@@ -5,6 +5,11 @@ module Spree
         class FavoritesController < ::Spree::Api::V2::BaseController
           include Spree::Api::V2::CollectionOptionsHelpers
 
+          def index
+            require_spree_current_user
+            render_serialized_payload { serialize_collection(paginated_collection) }
+          end
+
           def show
             render_serialized_payload { serialize_resource(resource) }
           end
@@ -56,6 +61,10 @@ module Spree
             Spree::V2::Storefront::FavoriteSerializer
           end
 
+          def collection_serializer
+            Spree::V2::Storefront::FavoriteSerializer
+          end
+
           def scope
             Spree::Favorite.accessible_by(current_ability, :show).includes(scope_includes)
           end
@@ -76,6 +85,18 @@ module Spree
 
           def delete_service
             Spree::Api::V2::Storefront::Favorite::Delete
+          end
+
+          def paginated_collection
+            collection_paginator.new(collection, params).call
+          end
+
+          def collection
+            spree_current_user.favorites if spree_current_user
+          end
+  
+          def collection_paginator
+            Spree::Api::Dependencies.storefront_collection_paginator.constantize
           end
 
         end
