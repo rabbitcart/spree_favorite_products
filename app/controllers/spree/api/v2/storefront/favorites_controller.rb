@@ -70,7 +70,7 @@ module Spree
           end
 
           def current_ability
-            @current_ability ||= Spree::Dependencies.ability_class.constantize.new(spree_current_user)
+            @current_ability ||= Spree::FavoriteAbility.new(spree_current_user)
           end
 
           def scope_includes
