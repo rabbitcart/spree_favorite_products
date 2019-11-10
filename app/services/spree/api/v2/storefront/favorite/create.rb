@@ -8,8 +8,8 @@ module Spree
 
             def call(user:, favorite_params:)
               favorite_params[:user_id] = user.id
-
-              favorite = Spree::Favorite.create!(favorite_params)
+              favorite = Spree::Favorite.new(favorite_params)
+              return failure(favorite) unless favorite.save
               success(favorite)
             end
           end

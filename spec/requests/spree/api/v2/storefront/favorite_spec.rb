@@ -84,6 +84,13 @@ describe 'Storefront API v2 Favorite spec', type: :request do
       it_behaves_like 'returns 403 HTTP status'
     end
 
+    context 'user has already favorited' do
+      let(:params) { { favoritable_type: "Spree::Product", favoritable_id: @product1.id } }
+      before { post "/api/v2/storefront/favorites", params: params, headers: headers }
+
+      it_behaves_like 'returns 422 HTTP status'
+    end
+
   end
 
   describe 'favorite#delete' do

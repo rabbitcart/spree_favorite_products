@@ -11,9 +11,7 @@ module Spree
 
           def create
             require_spree_current_user
-            # spree_authorize! :create, Spree::Favorite, spree_current_user
 
-            # {"favoritable_type"=>"Spree::Product", "favoritable_id"=>1, "user_id"=>1}
             favorite_params = {
               user: spree_current_user,
               favorite_params: {
@@ -22,8 +20,13 @@ module Spree
               }
             }
 
-            favorite = create_service.call(favorite_params).value
-            render_serialized_payload(201) { serialize_resource(favorite) }
+            result = create_service.call(favorite_params)
+
+            if result.success?
+              render_serialized_payload(201) { serialize_resource(result.value) }
+            else
+              render_error_payload(result.error)
+            end
           end
 
           def destroy
